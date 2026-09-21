@@ -1,0 +1,17 @@
+title = "cehrt scrape-cache allowlist"
+
+# Keep all of gitleaks' default rules...
+[extend]
+useDefault = true
+
+# ...but don't scan the scrape-cache directories. They hold verbatim third-party
+# JSON harvested from payer sites (Drupal &token= callback params, Akamai
+# Boomerang BOOMR_API_key RUM beacon keys, etc.). Those are not project or CMS
+# secrets, and flagging them turned the "Check for Secrets" gate permanently red.
+# A real secret committed to a workflow or script is still scanned and caught.
+[allowlist]
+description = "Verbatim scraped payer content is not a project secret"
+paths = [
+  '''cache/fhir_json_cache/.*''',
+  '''cehrt_fhir_json/.*''',
+]
